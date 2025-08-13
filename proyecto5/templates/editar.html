@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Editar Persona</title>
+    <link rel="stylesheet" href="">
+    <!-- Incluir jQuery desde CDN -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <style>
+        .table-container {
+            max-width: 600px;
+            font-size: 1.15em;
+        }
+        .error-message {
+            color: #d32f2f;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+        }
+        .field-error {
+            border: 2px solid #d32f2f !important;
+        }
+        .field-success {
+            border: 2px solid #4caf50 !important;
+        }
+        .form-row {
+            margin-bottom: 15px;
+        }
+        .form-row label {
+            display: inline-block;
+            width: 150px;
+            font-weight: bold;
+        }
+        .form-row input, .form-row select {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 250px;
+        }
+        .btn {
+            padding: 10px 20px;
+            margin: 5px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .btn-primary {
+            background-color: #2196f3;
+            color: white;
+        }
+        .btn-secondary {
+            background-color: #757575;
+            color: white;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="table-container">
+        <h1>Editar Persona</h1>
+        <form method="post" id="personaForm">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+            
+            <div class="form-row">
+                <label for="id_DNI">DNI:</label>
+                {{ form.DNI }}
+                <div class="error-message" id="dni-error"></div>
+            </div>
+            
+            <div class="form-row">
+                <label for="id_nombres">Nombres:</label>
+                {{ form.nombres }}
+                <div class="error-message" id="nombres-error"></div>
+            </div>
+            
+            <div class="form-row">
+                <label for="id_apellidos">Apellidos:</label>
+                {{ form.apellidos }}
+                <div class="error-message" id="apellidos-error"></div>
+            </div>
+            
+            <div class="form-row">
+                <label for="id_sexo">Sexo:</label>
+                {{ form.sexo }}
+                <div class="error-message" id="sexo-error"></div>
+            </div>
+            
+            <div class="form-row">
+                <label for="id_fecha_nacimiento">Fecha de nacimiento:</label>
+                {{ form.fecha_nacimiento }}
+                <div class="error-message" id="fecha-error"></div>
+            </div>
+            
+            <div class="form-row">
+                <label for="id_direccion">Dirección:</label>
+                {{ form.direccion }}
+                <div class="error-message" id="direccion-error"></div>
+            </div>
+            
+            <div class="form-row">
+                <label for="id_telefono">Teléfono:</label>
+                {{ form.telefono }}
+                <div class="error-message" id="telefono-error"></div>
+            </div>
+            
+            <div class="form-row">
+                <label for="id_correo">Correo electrónico:</label>
+                {{ form.correo }}
+                <div class="error-message" id="correo-error"></div>
+            </div>
+            
+            <div class="form-row">
+                <button type="submit" class="btn btn-primary" id="submitBtn">Guardar Cambios</button>
+                <a href="{% url 'lista_personas' %}" class="btn btn-secondary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+
+    <!-- Script de validación -->
+    <script>
+        $(document).ready(function() {
+            // Validacion expresiones
+            const regexTelefono = /^[0-9]{9,10}$/; // 9 o 10 dígitos
+            const regexCorreo = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            
+            // mensaje de error
+            function mostrarError(campoId, mensaje) {
+                $(`#${campoId}-error`).text(mensaje).show();
+                $(`#${campoId}`).addClass('field-error').removeClass('field-success');
+            }
+            
+            function mostrarExito(campoId) {
+                $(`#${campoId}-error`).hide();
+                $(`#${campoId}`).removeClass('field-error').addClass('field-success');
+            }
+            
+            // Validación para teléfono
+            $('#id_telefono').on('input blur', function() {
+                const telefono = $(this).val().trim();
+                
+                if (telefono === '') {
+                    mostrarError('telefono', 'El teléfono es obligatorio');
+                } else if (!regexTelefono.test(telefono)) {
+                    mostrarError('telefono', 'El teléfono debe tener 9 o 10 dígitos numéricos');
+                } else {
+                    mostrarExito('telefono');
+                }
+            });
+            
+            // Validación para correo
+            $('#id_correo').on('input blur', function() {
+                const correo = $(this).val().trim();
+                
+                if (correo === '') {
+                    mostrarError('correo', 'El correo electrónico es obligatorio');
+                } else if (!regexCorreo.test(correo)) {
+                    mostrarError('correo', 'Ingrese un correo electrónico válido (ejemplo: usuario@dominio.com)');
+                } else {
+                    mostrarExito('correo');
+                }
+            });
+            
+            // Validación del formulario completo antes de enviar
+            $('#personaForm').on('submit', function(e) {
+                let formularioValido = true;
+                
+                // Validar teléfono
+                const telefono = $('#id_telefono').val().trim();
+                if (telefono === '' || !regexTelefono.test(telefono)) {
+                    mostrarError('telefono', 'El teléfono debe tener 9 o 10 dígitos numéricos');
+                    formularioValido = false;
+                }
+                
+                // Validar correo
+                const correo = $('#id_correo').val().trim();
+                if (correo === '' || !regexCorreo.test(correo)) {
+                    mostrarError('correo', 'Ingrese un correo electrónico válido');
+                    formularioValido = false;
+                }
+                
+                // Si hay errores, prevenir el envío
+                if (!formularioValido) {
+                    e.preventDefault();
+                    alert('Por favor, corrija los errores antes de enviar el formulario.');
+                    return false;
+                }
+                
+                // Si todo está bien, mostrar mensaje de éxito
+                alert('Formulario válido. Guardando cambios...');
+            });
+            
+            // Validación adicional para otros campos obligatorios
+            $('#id_DNI, #id_nombres, #id_apellidos').on('blur', function() {
+                const valor = $(this).val().trim();
+                const campoId = $(this).attr('id').replace('id_', '');
+                
+                if (valor === '') {
+                    mostrarError(campoId, 'Este campo es obligatorio');
+                } else {
+                    mostrarExito(campoId);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

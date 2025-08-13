@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Lista de Personas</title>
+   {% load static %}
+   <link rel="stylesheet" href="">
+</head>
+<body>
+  <div class="table-container">
+    <h1>Lista de Personas</h1>
+    <a href="{% url 'inicio' %}" class="btn-accion">Volver a inicio</a>
+    <a href="{% url 'crear_persona' %}">Registrar nueva persona</a>
+    <table border="1" cellpadding="5" cellspacing="0">
+      <thead>
+        <tr>
+          <th>DNI</th>
+          <th>Nombres</th>
+          <th>Apellidos</th>
+          <th>Sexo</th>
+          <th>Fecha de nacimiento</th>
+          <th>Dirección</th>
+          <th>Teléfono</th>
+          <th>Correo electrónico</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for persona in personas %}
+        <tr>
+          <td>{{ persona.DNI }}</td>
+          <td>{{ persona.nombres }}</td>
+          <td>{{ persona.apellidos }}</td>
+          <td>{{ persona.get_sexo_display }}</td>
+          <td>{{ persona.fecha_nacimiento }}</td>
+          <td>{{ persona.direccion }}</td>
+          <td>{{ persona.telefono }}</td>
+          <td>{{ persona.correo }}</td>
+          <td>
+            <a href="{% url 'editar' persona.DNI %}" class="">Editar</a>
+            <form action="{% url 'eliminar' persona.DNI %}" method="post" style="display:inline; margin:0; padding:0;" onsubmit="return confirm('¿Estás seguro que deseas eliminar este registro?');">
+                {% csrf_token %}
+                
+                <button type="submit" class="">Eliminar</button>
+            </form>
+        </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="9">No hay personas registradas.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</body>
+</html>

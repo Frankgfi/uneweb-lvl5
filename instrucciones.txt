@@ -1,0 +1,19 @@
+1) Empleando el marco de desarrollo Django y el manejador de bases de datos POSTGRESQL, desarrolle una aplicación web, donde la interface de usuario, corresponda a un sitio web dinámico, que permita la gestión y administración de datos personales (ingreso de datos y un reporte de los datos almacenados). Los datos en cuestión son los siguientes:
+
+DNI (Documento nacional de Identificación o cédula de identidad)
+NOMBRES
+APELLIDOS
+SEXO
+FECHA DE NACIMIENTO
+DIRECCION
+TELÉFONO
+CORREO ELECTRÓNICO
+2) La aplicación, debe permitir el ingreso de registros y la generación de un reporte de los datos almacenados. Para ello, debe emplear los recursos estudiados a través del curso, que le provee el marco de desarrollo Django, así como los demás componentes necesarios para el desarrollo de un sitio web dinámico.
+
+3) Estos datos deben ser almacenados en una base de datos POSTGRESQL.
+
+4) Para el desarrollo de la interface gráfica (es libre de crear el diseño que le resulte más conveniente), así mismo debe desarrollar, la base de datos con sus respectivas tablas, para ejecutar las funcionalidades requeridas. Haga uso del ORM de Django.
+
+5) Debe incorporar la utilización de métodos jQuery y funcionalidades en Javascript a los efectos de validar los datos ingresados. Tome como referencia los usos de expresiones regulares, para validar los siguientes campos: TELÉFONO y CORREO ELECTRÓNICO. Se deben emitir mensajes informativos, empleando los recursos estudiados en jQuery y JavaScript.
+
+6) Además de cargar el proyecto en la plataforma de cursos de UNEWEB, el estudiante lo debe publicar en GITHUB, empleando GIT y enviar la dirección pública del mismo, al momento de compartir el proyecto para revisión

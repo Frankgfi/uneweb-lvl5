@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Eliminar persona</title>
+    <meta charset="UTF-8">
+</head>
+<body>
+    <h1>¿Estás seguro que deseas eliminar a {{ persona.nombres }} {{ persona.apellidos }}?</h1>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Sí, eliminar</button>
+        <a href="{% url 'lista_personas' %}">Cancelar</a>
+    </form>
+</body>
+</html>
