@@ -116,23 +116,21 @@
     <!-- Script de validación -->
     <script>
         $(document).ready(function() {
-            // Expresiones regulares para validación
-            const regexTelefono = /^[0-9]{9,10}$/; // 9 o 10 dígitos
+            // Regex para validación
+            const regexTelefono = /^[0-9]{9,10}$/;
             const regexCorreo = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
             
-            // Función para mostrar mensaje de error
             function mostrarError(campoId, mensaje) {
                 $(`#${campoId}-error`).text(mensaje).show();
                 $(`#${campoId}`).addClass('field-error').removeClass('field-success');
             }
             
-            // Función para mostrar éxito
             function mostrarExito(campoId) {
                 $(`#${campoId}-error`).hide();
                 $(`#${campoId}`).removeClass('field-error').addClass('field-success');
             }
             
-            // Validación en tiempo real para teléfono
+            // Validación teléfono
             $('#id_telefono').on('input blur', function() {
                 const telefono = $(this).val().trim();
                 
@@ -145,7 +143,7 @@
                 }
             });
             
-            // Validación en tiempo real para correo
+            // Validación correo
             $('#id_correo').on('input blur', function() {
                 const correo = $(this).val().trim();
                 
@@ -158,45 +156,29 @@
                 }
             });
             
-            // Validación del formulario completo antes de enviar
+            // Validación antes de enviar
             $('#personaForm').on('submit', function(e) {
                 let formularioValido = true;
                 
-                // Validar teléfono
                 const telefono = $('#id_telefono').val().trim();
                 if (telefono === '' || !regexTelefono.test(telefono)) {
                     mostrarError('telefono', 'El teléfono debe tener 9 o 10 dígitos numéricos');
                     formularioValido = false;
                 }
                 
-                // Validar correo
                 const correo = $('#id_correo').val().trim();
                 if (correo === '' || !regexCorreo.test(correo)) {
                     mostrarError('correo', 'Ingrese un correo electrónico válido');
                     formularioValido = false;
                 }
                 
-                // Si hay errores, prevenir el envío
                 if (!formularioValido) {
                     e.preventDefault();
                     alert('Por favor, corrija los errores antes de enviar el formulario.');
                     return false;
                 }
                 
-                // Si todo está bien, mostrar mensaje de éxito
                 alert('Formulario válido. Enviando datos...');
-            });
-            
-            // Validación adicional para otros campos obligatorios
-            $('#id_DNI, #id_nombres, #id_apellidos').on('blur', function() {
-                const valor = $(this).val().trim();
-                const campoId = $(this).attr('id').replace('id_', '');
-                
-                if (valor === '') {
-                    mostrarError(campoId, 'Este campo es obligatorio');
-                } else {
-                    mostrarExito(campoId);
-                }
             });
         });
     </script>
