@@ -1,114 +1,74 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <title>Registrar nueva persona</title>
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <!-- Incluir jQuery desde CDN -->
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-    <style>
-        .error-message {
-            color: #d32f2f;
-            font-size: 12px;
-            margin-top: 5px;
-            display: none;
-        }
-        .field-error {
-            border: 2px solid #d32f2f !important;
-        }
-        .field-success {
-            border: 2px solid #4caf50 !important;
-        }
-        .form-row {
-            margin-bottom: 15px;
-        }
-        .form-row label {
-            display: inline-block;
-            width: 150px;
-            font-weight: bold;
-        }
-        .form-row input, .form-row select {
-            padding: 8px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            width: 250px;
-        }
-        .btn {
-            padding: 10px 20px;
-            margin: 5px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-        .btn-primary {
-            background-color: #2196f3;
-            color: white;
-        }
-        .btn-secondary {
-            background-color: #757575;
-            color: white;
-            text-decoration: none;
-        }
-    </style>
 </head>
 <body>
-    <div class="table-container">
+    <div class="formulario-container">
         <h1>Registrar nueva persona</h1>
         <form method="post" id="personaForm">
             {% csrf_token %}
             {{ form.non_field_errors }}
             
-            <div class="form-row">
-                <label for="id_DNI">DNI:</label>
-                {{ form.DNI }}
-                <div class="error-message" id="dni-error"></div>
-            </div>
+            <table class="form-table">
+                <tr>
+                    <td><label for="id_DNI">DNI:</label></td>
+                    <td>{{ form.DNI }}</td>
+                    <td><div class="error-message" id="dni-error"></div></td>
+                </tr>
+                
+                <tr>
+                    <td><label for="id_nombres">Nombres:</label></td>
+                    <td>{{ form.nombres }}</td>
+                    <td><div class="error-message" id="nombres-error"></div></td>
+                </tr>
+                
+                <tr>
+                    <td><label for="id_apellidos">Apellidos:</label></td>
+                    <td>{{ form.apellidos }}</td>
+                    <td><div class="error-message" id="apellidos-error"></div></td>
+                </tr>
+                
+                <tr>
+                    <td><label for="id_sexo">Sexo:</label></td>
+                    <td>{{ form.sexo }}</td>
+                    <td><div class="error-message" id="sexo-error"></div></td>
+                </tr>
+                
+                <tr>
+                    <td><label for="id_fecha_nacimiento">Fecha de nacimiento:</label></td>
+                    <td>{{ form.fecha_nacimiento }}</td>
+                    <td><div class="error-message" id="fecha-error"></div></td>
+                </tr>
+                
+                <tr>
+                    <td><label for="id_direccion">Dirección:</label></td>
+                    <td>{{ form.direccion }}</td>
+                    <td><div class="error-message" id="direccion-error"></div></td>
+                </tr>
+                
+                <tr>
+                    <td><label for="id_telefono">Teléfono:</label></td>
+                    <td>{{ form.telefono }}</td>
+                    <td><div class="error-message" id="telefono-error"></div></td>
+                </tr>
+                
+                <tr>
+                    <td><label for="id_correo">Correo electrónico:</label></td>
+                    <td>{{ form.correo }}</td>
+                    <td><div class="error-message" id="correo-error"></div></td>
+                </tr>
+            </table>
             
-            <div class="form-row">
-                <label for="id_nombres">Nombres:</label>
-                {{ form.nombres }}
-                <div class="error-message" id="nombres-error"></div>
-            </div>
-            
-            <div class="form-row">
-                <label for="id_apellidos">Apellidos:</label>
-                {{ form.apellidos }}
-                <div class="error-message" id="apellidos-error"></div>
-            </div>
-            
-            <div class="form-row">
-                <label for="id_sexo">Sexo:</label>
-                {{ form.sexo }}
-                <div class="error-message" id="sexo-error"></div>
-            </div>
-            
-            <div class="form-row">
-                <label for="id_fecha_nacimiento">Fecha de nacimiento:</label>
-                {{ form.fecha_nacimiento }}
-                <div class="error-message" id="fecha-error"></div>
-            </div>
-            
-            <div class="form-row">
-                <label for="id_direccion">Dirección:</label>
-                {{ form.direccion }}
-                <div class="error-message" id="direccion-error"></div>
-            </div>
-            
-            <div class="form-row">
-                <label for="id_telefono">Teléfono:</label>
-                {{ form.telefono }}
-                <div class="error-message" id="telefono-error"></div>
-            </div>
-            
-            <div class="form-row">
-                <label for="id_correo">Correo electrónico:</label>
-                {{ form.correo }}
-                <div class="error-message" id="correo-error"></div>
-            </div>
-            
-            <div class="form-row">
-                <button type="submit" class="btn btn-primary" id="submitBtn">Guardar</button>
-                <a href="{%url 'lista_personas'%}" class="btn btn-secondary">Volver a la lista</a>
+            <div class="botones-container">
+                <button type="submit" class="btn-guardar" id="submitBtn">Guardar</button>
+                <a href="{% url 'lista_personas' %}" class="btn-volver">Volver a la lista</a>
             </div>
         </form>
     </div>
@@ -117,7 +77,7 @@
     <script>
         $(document).ready(function() {
             // Regex para validación
-            const regexTelefono = /^[0-9]{9,10}$/;
+            const regexTelefono = /^[0-9]{12}$/;
             const regexCorreo = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
             
             function mostrarError(campoId, mensaje) {
@@ -137,7 +97,7 @@
                 if (telefono === '') {
                     mostrarError('telefono', 'El teléfono es obligatorio');
                 } else if (!regexTelefono.test(telefono)) {
-                    mostrarError('telefono', 'El teléfono debe tener 9 o 10 dígitos numéricos');
+                    mostrarError('telefono', 'El teléfono debe tener exactamente 12 dígitos numéricos');
                 } else {
                     mostrarExito('telefono');
                 }
@@ -162,7 +122,7 @@
                 
                 const telefono = $('#id_telefono').val().trim();
                 if (telefono === '' || !regexTelefono.test(telefono)) {
-                    mostrarError('telefono', 'El teléfono debe tener 9 o 10 dígitos numéricos');
+                    mostrarError('telefono', 'El teléfono debe tener exactamente 12 dígitos numéricos');
                     formularioValido = false;
                 }
                 
